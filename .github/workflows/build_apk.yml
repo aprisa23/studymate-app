@@ -12,7 +12,7 @@ jobs:
     name: Analyze, Test, and Build Release APK
     runs-on: ubuntu-latest
 
-    steps:
+   steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
