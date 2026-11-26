@@ -31,8 +31,31 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Ensure Android v2 embedding structure
-        run: flutter create --platforms=android --org com.example --project-name studymate .
+      - name: Fix root build.gradle.kts
+        run: |
+          cat << 'EOF' > android/build.gradle.kts
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+
+          val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
+          rootProject.layout.buildDirectory.value(newBuildDir)
+
+          subprojects {
+              val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+              project.layout.buildDirectory.value(newSubprojectBuildDir)
+          }
+          subprojects {
+              project.evaluationDependsOn(":app")
+          }
+
+          tasks.register<Delete>("clean") {
+              delete(rootProject.layout.buildDirectory)
+          }
+          EOF
 
       - name: Run static analysis
         run: flutter analyze
