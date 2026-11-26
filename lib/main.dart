@@ -9,16 +9,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('id_ID');
 
-  if (EnvConfig.isSupabaseConfigured) {
-    await Supabase.initialize(
-      url: EnvConfig.supabaseUrl,
-      anonKey: EnvConfig.supabaseAnonKey,
-    );
-  }
-
-  runApp(
-    const ProviderScope(
-      child: StudyMateApp(),
-    ),
+ if (EnvConfig.isSupabaseConfigured) {
+  await Supabase.initialize(
+    url: EnvConfig.supabaseUrl,
+    publishableKey: EnvConfig.supabaseAnonKey,
   );
 }
