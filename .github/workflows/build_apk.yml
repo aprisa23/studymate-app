@@ -12,7 +12,7 @@ jobs:
     name: Analyze, Test, and Build Release APK
     runs-on: ubuntu-latest
 
-   steps:
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -30,6 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Ensure Android v2 embedding structure
+        run: flutter create --platforms=android --org com.example --project-name studymate .
 
       - name: Run static analysis
         run: flutter analyze
